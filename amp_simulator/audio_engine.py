@@ -1,5 +1,5 @@
 import sounddevice as sd
-from dsp import process
+from amp_simulator.dsp.dsp import process
 
 def start_audio(params):
     # sets up the real-time audio stream
@@ -20,14 +20,14 @@ def start_audio(params):
         outdata[:, 0] = y
 
     # create audio stream
-    # samplerate = 44.1 kHz
+    # samplerate for Scarlett is 44.1 kHz
     stream = sd.Stream(
-        samplerate = 44100,
-        blocksize = 256,
-        channels = 1,
-        dtype = 'float32',
-        callback = callback
-    )
+        samplerate=44100,
+        blocksize=256,
+        channels=1,
+        dtype='float32',
+        callback=callback
+    ) 
 
     # start real-time audio processing
     stream.start()

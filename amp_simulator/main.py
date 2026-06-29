@@ -1,8 +1,6 @@
-from params import Params
-from audio_engine import start_audio
-# from gui import start_gui
-
-# in place of "start_gui" you can name it whatever you want (it's up to you)
+from amp_simulator.params import Params
+from amp_simulator.audio_engine import start_audio
+from amp_simulator.gui.gui import start_gui
 
 def main(): 
     # params will be an instance of Params, holding all the parameters to be used throughout
@@ -12,7 +10,7 @@ def main():
     start_audio(params)
 
     # starts the graphical interface; runs until window is closed by user
-    # start_gui(params)
+    start_gui(params)
     # uncomment and call when we get a working GUI setup
         
 if __name__ == "__main__":
