@@ -9,9 +9,8 @@ def main():
     # starts the real-time audio processing; parametrized by params
     start_audio(params)
 
-    # starts the graphical interface; runs until window is closed by user
+    # starts the gui, modified params; runs until window is closed by user
     start_gui(params)
-    # uncomment and call when we get a working GUI setup
         
 if __name__ == "__main__":
     main()

@@ -15,42 +15,38 @@ def start_gui(params):
         def update_volume(sender, app_data):
             params.volume = app_data
 
-        # create some spacing so it looks more like an amp panel
         dpg.add_text("Input Stage")
 
-        dpg.add_slider_float(
+        dpg.add_knob_float(
             label="Gain",
             default_value=params.gain,
             min_value=0.0,
             max_value=10.0,
-            callback=update_gain,
-            width=400
+            callback=update_gain
         )
 
         dpg.add_spacing(count=2)
 
         dpg.add_text("Amp Drive Stage")
 
-        dpg.add_slider_float(
+        dpg.add_knob_float(
             label="Drive",
             default_value=params.drive,
             min_value=0.0,
             max_value=10.0,
-            callback=update_drive,
-            width=400
+            callback=update_drive
         )
 
         dpg.add_spacing(count=2)
 
         dpg.add_text("Output Stage")
 
-        dpg.add_slider_float(
+        dpg.add_knob_float(
             label="Volume",
             default_value=params.volume,
             min_value=0.0,
             max_value=10.0,
-            callback=update_volume,
-            width=400
+            callback=update_volume
         )
 
     dpg.setup_dearpygui()
