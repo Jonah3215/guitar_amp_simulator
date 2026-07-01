@@ -22,7 +22,7 @@ def start_audio(params):
         # write processed signal to output
         outdata[:, 0] = y  # left ear
         outdata[:, 1] = y  # right ear
-
+    
     # create audio stream
     # this assumes a sample rate of 48 kHz
     # if you're using this change your interfacing sample rate
