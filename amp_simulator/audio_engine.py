@@ -1,5 +1,5 @@
 import sounddevice as sd
-from amp_simulator.dsp.dsp import process
+from amp_simulator.dsp.process import process
 
 INPUT_DEVICE = 14 # 14 Analogue 1 + 2 (Focusrite USB Audio), WASAPI (2 in, 0 out)
 OUTPUT_DEVICE = 13 # 13 Speakers (Focusrite USB Audio), WASAPI (0 in, 2 out)

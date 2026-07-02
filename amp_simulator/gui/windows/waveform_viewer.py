@@ -1,5 +1,7 @@
 import dearpygui.dearpygui as dpg
 
+# This is here just for the sake of learning what this would even look like
+# Lots of effort must be expended here to make this actually function (I assume at least)
 
 def create_tab(params):
 
