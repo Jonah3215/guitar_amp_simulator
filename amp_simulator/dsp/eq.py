@@ -3,24 +3,26 @@ from .filters import OnePoleLowPass, OnePoleHighPass
 
 class ThreeBandEQ:
     def __init__(self):
-        self.low = OnePoleLowPass()
-        self.high = OnePoleHighPass()
-
+        self.low_lp = OnePoleLowPass()
+        self.mid_lp = OnePoleLowPass()
+        
     def process(self, x, bass, mid, treble):
-        # normalize knobs from [0, 10] to [0, 1]
         bass /= 10.0
         mid /= 10.0
         treble /= 10.0
 
-        # split signal into frequency regions
-        low = self.low.process(x, cutoff=0.05)
-        high = self.high.process(x, cutoff=0.05)
-        mid_band = x - (low + high)
+        # Two crossover frequencies
+        low = self.low_lp.process(x, cutoff=0.02)
+        low_mid = self.mid_lp.process(x, cutoff=0.20)
 
-        # apply gain per band
-        low *= bass
+        # Split into bands
+        bass_band = low
+        mid_band = low_mid - low
+        treble_band = x - low_mid
+
+        # Apply gains
+        bass_band *= bass
         mid_band *= mid
-        high *= treble
+        treble_band *= treble
 
-        # recombine
-        return low + mid_band + high
+        return bass_band + mid_band + treble_band

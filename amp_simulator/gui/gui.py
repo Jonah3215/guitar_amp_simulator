@@ -4,8 +4,8 @@ from .windows.main_amp import create_tab as create_main_amp
 from .windows.pedal_board import create_tab as create_pedal_board
 from .windows.waveform_viewer import create_tab as create_waveform_viewer
 
-
-def start_gui(params):
+def start_gui(app):
+    params = app.params
 
     dpg.create_context()
 

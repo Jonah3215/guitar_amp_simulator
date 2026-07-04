@@ -1,6 +1,5 @@
 import dearpygui.dearpygui as dpg
 
-
 def create_tab(params):
 
     def update_gain(sender, app_data):
@@ -45,3 +44,7 @@ def create_tab(params):
         max_value=10.0,
         callback=update_volume
     )
+
+    dpg.add_spacing(count=2)
+
+    dpg.add_text("EQ")
