@@ -46,5 +46,3 @@ def create_tab(params):
     )
 
     dpg.add_spacing(count=2)
-
-    dpg.add_text("EQ")

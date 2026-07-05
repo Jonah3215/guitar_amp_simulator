@@ -15,6 +15,5 @@ def main():
     # start GUI (user control layer)
     start_gui(app)
 
-
 if __name__ == "__main__":
     main()

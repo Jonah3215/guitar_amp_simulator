@@ -14,9 +14,11 @@ class AppContext:
         self.eq = ThreeBandEQ()
 
         # IR list
+        ir_folder = os.path.join(os.path.dirname(__file__), "dsp", "irs")
+
         self.ir_list = [
-            os.path.join("irs", f)
-            for f in os.listdir("irs")
+            os.path.join(ir_folder, f)
+            for f in os.listdir(ir_folder)
             if f.lower().endswith(".wav")
         ]
 

@@ -1,5 +1,5 @@
 import numpy as np
-from scipy.io import wavfile
+import soundfile as sf
 
 class CabinetIR:
     def __init__(self, ir_path=None, fft_size=2048, block_size=256):
@@ -20,9 +20,9 @@ class CabinetIR:
 
     def load_ir(self, path):
         # load IR from wav file
-        sr, data = wavfile.read(path)
+        data, sr = sf.read(path)
 
-        # force IR to mono)
+        # force IR to mono
         if data.ndim > 1:
             data = data.mean(axis=1)
 
