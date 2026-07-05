@@ -1,3 +1,5 @@
+import os
+
 from amp_simulator.dsp.cabinet import CabinetIR
 from amp_simulator.dsp.eq import ThreeBandEQ
 from amp_simulator.params import Params
@@ -13,7 +15,9 @@ class AppContext:
 
         # IR list
         self.ir_list = [
-            
+            os.path.join("irs", f)
+            for f in os.listdir("irs")
+            if f.lower().endswith(".wav")
         ]
 
         # system config
