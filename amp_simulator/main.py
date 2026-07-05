@@ -7,7 +7,7 @@ def main():
     app = AppContext()
 
     # load default cabinet IR
-    app.cabinet.load_ir(app.ir_list[0])
+    app.cabinet.load_ir(app.ir_list[4])
 
     # start audio engine (real-time DSP)
     start_audio(app)

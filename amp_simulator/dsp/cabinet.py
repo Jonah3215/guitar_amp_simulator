@@ -1,72 +1,71 @@
 import numpy as np
 import soundfile as sf
+import math
 
 class CabinetIR:
-    def __init__(self, ir_path=None, fft_size=2048, block_size=256):
+    def __init__(self, ir_path=None, block_size=256):
         self.ir = None
         self.ir_fft = None
-
-        # block size (size of incoming audio chunks)
         self.block_size = block_size
-
-        # convolution size (computed after IR is loaded)
-        self.n_fft = None
-
-        # leftover audio from previous block convolution (initialize to 0s)
-        self.overlap = None
+        self.fft_size = None
+        self.fft_buffer = None
 
         if ir_path:
             self.load_ir(ir_path)
 
     def load_ir(self, path):
-        # load IR from wav file
         data, sr = sf.read(path)
 
-        # force IR to mono
+        # force mono
         if data.ndim > 1:
             data = data.mean(axis=1)
 
-        # convert to float and normalize, +1e-12 prevents divide-by-zero
+        # convert to float and normalize
         data = data.astype(np.float32)
         data /= np.max(np.abs(data)) + 1e-12
 
         self.ir = data
 
-        # compute the FFT size (N + M - 1)
-        self.n_fft = self.block_size + len(self.ir) - 1
+        # Size = M + N - 1
+        min_fft_size = self.block_size + len(self.ir) - 1
+        
+        # round up to the next power of 2
+        self.fft_size = 1 << math.ceil(math.log2(min_fft_size))
 
-        # precompute FFT of IR
-        self.ir_fft = np.fft.rfft(self.ir, n=self.n_fft)
+        # pad IR to the new optimized FFT size
+        ir_padded = np.zeros(self.fft_size, dtype=np.float32)
+        ir_padded[:len(self.ir)] = self.ir
 
-        # reset overlap buffer for new IR
-        self.overlap = np.zeros(self.n_fft, dtype=np.float32)
+        # precompute the frequency domain IR
+        self.ir_fft = np.fft.rfft(ir_padded)
+
+        # reset input buffer to the correct power-of-two size
+        self.fft_buffer = np.zeros(self.fft_size, dtype=np.float32)
 
     def reset(self):
-        # clears leftover convolution tail
-        # call when switching IRs or restarting audio stream
-        if self.overlap is not None:
-            self.overlap.fill(0)
+        if self.fft_buffer is not None:
+            self.fft_buffer.fill(0)
 
     def process(self, x):
-        # if no IR loaded, just return the original signal
         if self.ir_fft is None:
             return x
 
-        n = self.n_fft
+        # force x to be the size of self.block_size
+        x = x[:self.block_size]
 
-        # zero-pad the input buffer to the FFT size
-        x_pad = np.zeros(n, dtype=np.float32)
-        x_pad[:len(x)] = x
+        # shift the buffer left by one block size
+        self.fft_buffer[:-self.block_size] = self.fft_buffer[self.block_size:]
+        # insert the new audio at the end
+        self.fft_buffer[-self.block_size:] = x
 
-        # apply convolution theorem
-        X = np.fft.rfft(x_pad)
+        # X = forward FFT of x
+        X = np.fft.rfft(self.fft_buffer)
+
+        # convolution via complex multiplication
         Y = X * self.ir_fft
+
+        # inverse FFT
         y = np.fft.irfft(Y)
 
-        # overlap stores leftover from previous block
-        output = y[:len(x)] + self.overlap[:len(x)]
-
-        # store new tail for next block
-        self.overlap = y[len(x):]
-
-        return output.astype(np.float32)
+        # return 
+        return y[-self.block_size:].astype(np.float32)

@@ -12,8 +12,7 @@ class Params:
         self.treble = 5.0
 
         # cabinet IR controls
-        self.ir_enabled = False
-        self.ir_list = ["yee"]
+        self.ir_enabled = True
         self.selected_ir = 0
 
         # distortion pedal (NOT used in first run)

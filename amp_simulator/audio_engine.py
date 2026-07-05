@@ -21,7 +21,7 @@ def start_audio(app):
         samplerate=app.sample_rate,
         blocksize=app.block_size,
         dtype="float32",
-        #device=(14, 13),
+        device=(14, 13),
         channels=2,
         callback=callback
     )
