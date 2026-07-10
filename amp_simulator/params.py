@@ -12,7 +12,7 @@ class Params:
         self.treble = 5.0
 
         # cabinet IR controls
-        self.ir_enabled = True
+        self.ir_enabled = False
         self.selected_ir = 0
 
         # noise gate

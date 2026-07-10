@@ -27,7 +27,7 @@ def start_gui(app):
         with dpg.tab_bar():
 
             with dpg.tab(label="Main Amp"):
-                create_main_amp(params)
+                create_main_amp(app)
 
             with dpg.tab(label="Pedal Board"):
                 create_pedal_board(params)
