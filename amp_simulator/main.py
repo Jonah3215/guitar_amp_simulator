@@ -5,9 +5,9 @@ from amp_simulator.gui.gui import start_gui
 def main():
     # create shared application state
     app = AppContext()
-
+    
     # load default cabinet IR
-    app.cabinet.load_ir(app.ir_list[4])
+    app.cabinet.load_ir(app.ir_list[0])
 
     # start audio engine (real-time DSP)
     start_audio(app)

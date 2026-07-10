@@ -15,6 +15,12 @@ class Params:
         self.ir_enabled = True
         self.selected_ir = 0
 
+        # noise gate
+        self.noise_gate_enabled = False
+        self.noise_gate_threshold = 5.0
+        self.noise_gate_attack = 5.0
+        self.noise_gate_decay = 5.0
+
         # distortion pedal (NOT used in first run)
         # self.distortion_on = False
         # self.distortion_amount = 5.0
