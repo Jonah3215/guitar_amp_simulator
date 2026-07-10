@@ -25,7 +25,6 @@ def create_tab(app):
     def update_ir(sender, app_data):
         cabinet.load_ir(app.ir_list[app.ir_list.index(app_data)])
         
-
     def toggle_ir(sender, app_data):
         params.ir_enabled = app_data
 
