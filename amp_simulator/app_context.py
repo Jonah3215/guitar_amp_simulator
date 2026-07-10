@@ -1,7 +1,7 @@
 import os
 
-from amp_simulator.dsp.cabinet import CabinetIR
-from amp_simulator.dsp.eq import ThreeBandEQ
+from amp_simulator.dsp.core.cabinet import CabinetIR
+from amp_simulator.dsp.core.eq import ThreeBandEQ
 from amp_simulator.params import Params
 
 class AppContext:

@@ -1,8 +1,8 @@
 import numpy as np
 
-from amp_simulator.dsp.input_stage import input_stage
-from amp_simulator.dsp.amp_stage import amp_stage
-from amp_simulator.dsp.output_stage import output_stage
+from amp_simulator.dsp.stages.input_stage import input_stage
+from amp_simulator.dsp.stages.amp_stage import amp_stage
+from amp_simulator.dsp.stages.output_stage import output_stage
 
 # x is the audio information
 # params is the parameters instance

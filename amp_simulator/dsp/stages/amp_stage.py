@@ -4,10 +4,10 @@ def amp_stage(x, app):
     params = app.params
     cabinet = app.cabinet
     eq = app.eq
-
+    
     x = amp_gain(x, params.gain)
     x = amp_drive(x, params.drive)
-    x = amp_eq(x, 
+    x = amp_eq(x,
                eq, 
                params.bass, 
                params.mid, 
