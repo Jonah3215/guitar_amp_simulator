@@ -1,8 +1,11 @@
 import os
+from amp_simulator.params import Params
+
+from amp_simulator.dsp.effects.noise_gate import NoiseGate
+from amp_simulator.dsp.effects.compressor import Compressor
 
 from amp_simulator.dsp.core.cabinet import CabinetIR
 from amp_simulator.dsp.core.eq import ThreeBandEQ
-from amp_simulator.params import Params
 
 class AppContext:
     def __init__(self):
@@ -12,6 +15,8 @@ class AppContext:
         # stateful DSP objects
         self.cabinet = CabinetIR()
         self.eq = ThreeBandEQ()
+        self.noise_gate = NoiseGate()
+        self.compressor = Compressor()
 
         # IR list
         ir_folder = os.path.join(os.path.dirname(__file__), "dsp", "irs")

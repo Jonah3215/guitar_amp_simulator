@@ -14,7 +14,7 @@ def create_tab(app):
         params.bass = app_data
 
     def update_mid(sender, app_data):
-        params.mid = app_data
+        params.mids = app_data
 
     def update_treble(sender, app_data):
         params.treble = app_data
@@ -28,8 +28,6 @@ def create_tab(app):
     def toggle_ir(sender, app_data):
         params.ir_enabled = app_data
 
-    dpg.add_text("Input Stage")
-
     dpg.add_knob_float(
         label="Gain",
         default_value=params.gain,
@@ -40,8 +38,6 @@ def create_tab(app):
 
     dpg.add_spacing(count=2)
 
-    dpg.add_text("Amp Drive Stage")
-
     dpg.add_knob_float(
         label="Drive",
         default_value=params.drive,
@@ -51,8 +47,6 @@ def create_tab(app):
     )
 
     dpg.add_spacing(count=2)
-
-    dpg.add_text("Output Stage")
 
     dpg.add_knob_float(
         label="Volume",
@@ -76,7 +70,7 @@ def create_tab(app):
 
     dpg.add_knob_float(
         label="Mids",
-        default_value=params.mid,
+        default_value=params.mids,
         min_value=0.0,
         max_value=10.0,
         callback=update_mid

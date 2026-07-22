@@ -5,8 +5,6 @@ from .windows.pedal_board import create_tab as create_pedal_board
 from .windows.waveform_viewer import create_tab as create_waveform_viewer
 
 def start_gui(app):
-    params = app.params
-
     dpg.create_context()
 
     dpg.create_viewport(
@@ -30,10 +28,10 @@ def start_gui(app):
                 create_main_amp(app)
 
             with dpg.tab(label="Pedal Board"):
-                create_pedal_board(params)
+                create_pedal_board(app)
 
             with dpg.tab(label="Waveform Viewer"):
-                create_waveform_viewer(params)
+                create_waveform_viewer(app)
 
     dpg.setup_dearpygui()
     dpg.show_viewport()

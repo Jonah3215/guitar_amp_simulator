@@ -10,7 +10,7 @@ def process(x, app):
     # force audio data to be 32 bit float
     x = x.astype(np.float32)
 
-    # input_stage(x, params)
+    x = input_stage(x, app)
     x = amp_stage(x, app)
     # output_stage(x, params)
     
