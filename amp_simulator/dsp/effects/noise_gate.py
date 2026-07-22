@@ -9,56 +9,54 @@ class NoiseGate:
         # current gain applied to signal
         self.gain = 1.0
 
+        # Assuming standard sample rate. Change this if your system uses 48000!
+        self.sample_rate = 44100.0 
+
     def process(self, x, params):
-        # map GUI knobs [0, 10] into DSP values
-        threshold = self.map_knob(
-            params.noise_gate_threshold,
-            0.001,
-            0.20
-        )
+        # 1. Map GUI knobs ONCE outside the loop
+        threshold = self.map_knob(params.noise_gate_threshold, 0.001, 0.20)
+        threshold_close = threshold * 0.8  # Hysteresis safe zone
+        
+        # Envelope smoothness (keep this very high so the envelope doesn't jitter)
+        env_coeff = 0.999 
 
-        # lower coefficient => faster response
-        # invert the knob so higher value means faster attack
-        a_attack = self.map_knob(
-            10 - params.noise_gate_attack,
-            0.0,
-            0.999
-        )
+        # 2. Map Attack/Decay to TIME (in seconds)
+        # Attack: 1ms (fastest) to 50ms (slowest)
+        attack_time = self.map_knob(10 - params.noise_gate_attack, 0.001, 0.050)
+        
+        # Decay: 10ms (fastest) to 500ms (slowest)
+        decay_time = self.map_knob(params.noise_gate_decay, 0.010, 0.500)
 
-        # higher coefficient => slower closing
-        a_decay = self.map_knob(
-            params.noise_gate_decay,
-            0.0,
-            0.999
-        )
-
-        # controls how quickly envelope follows input loudness
-        # might parametrize and make into a knob
-        env_coeff = 0.8
+        # 3. Calculate step size per sample
+        # Formula: 1.0 (full volume) / (Total Samples it takes to finish the fade)
+        attack_step = 1.0 / (self.sample_rate * attack_time)
+        decay_step = 1.0 / (self.sample_rate * decay_time)
 
         y = np.zeros_like(x)
 
         # process each sample
         for i, sample in enumerate(x):
-
+            
             # estimate envelope
-            current_env = self.env_filter.process_sample(
-                abs(sample),
-                env_coeff
-            )
+            current_env = self.env_filter.process_sample(abs(sample), env_coeff)
 
-            # decide whether gate should be open or closed
-            target_gain = 1.0 if current_env > threshold else 0.0
-
-            # smooth gain changes to prevent clicks
-            if (target_gain > self.gain):
-                a = a_attack
+            # decide target state using Hysteresis
+            if self.gain > 0.5:
+                # Gate is mostly open, use lower threshold
+                target_gain = 1.0 if current_env > threshold_close else 0.0
             else:
-                a = a_decay
+                # Gate is mostly closed, use upper threshold
+                target_gain = 1.0 if current_env > threshold else 0.0
 
-            self.gain = (1 - a) * target_gain + a * self.gain
+            # LINEAR RAMPING: The Nuclear Option
+            if self.gain < target_gain:
+                # Fading IN: Add step, but don't overshoot target_gain
+                self.gain = min(self.gain + attack_step, target_gain)
+            elif self.gain > target_gain:
+                # Fading OUT: Subtract step, but don't undershoot target_gain
+                self.gain = max(self.gain - decay_step, target_gain)
 
-            # 4. Apply gate gain
+            # apply gate gain
             y[i] = sample * self.gain
 
         return y

@@ -2,9 +2,6 @@ import sounddevice as sd
 from amp_simulator.dsp.process import process
 
 def start_audio(app):
-    cabinet = app.cabinet
-    params = app.params
-
     def callback(indata, outdata, frames, time, status):
 
         if status:

@@ -8,7 +8,7 @@ class Params:
 
         # eq knobs
         self.bass = 5.0
-        self.mid = 5.0
+        self.mids = 5.0
         self.treble = 5.0
 
         # cabinet IR controls
@@ -20,6 +20,14 @@ class Params:
         self.noise_gate_threshold = 5.0
         self.noise_gate_attack = 5.0
         self.noise_gate_decay = 5.0
+        
+        # compressor
+        self.compressor_enabled = False
+        self.compressor_threshold = 6.0
+        self.compressor_ratio = 2.5
+        self.compressor_attack = 7.0
+        self.compressor_decay = 5.0
+        self.compressor_makeup = 1.5
 
         # distortion pedal (NOT used in first run)
         # self.distortion_on = False

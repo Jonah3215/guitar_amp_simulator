@@ -1,30 +1,26 @@
-from ..core.filters import OnePoleFilter, OnePoleHighPass
+from ..core.filters import OnePoleFilter
 
 class ThreeBandEQ:
     def __init__(self):
         self.low_lp = OnePoleFilter()
         self.mid_lp = OnePoleFilter()
-        self.high_hp = OnePoleHighPass()
+        # We don't even need high_hp! Subtraction handles the treble perfectly.
 
-    def process(self, x, bass, mid, treble):
+    def process(self, x, params):
+        # 1. High coefficient (e.g., 0.99) = heavy filtering. ONLY Bass gets through.
+        low = self.low_lp.process(x, a=0.99)
+        
+        # 2. Lower coefficient (e.g., 0.80) = wider filtering. Bass + Mids get through.
+        low_mid = self.mid_lp.process(  x, a=0.80)
 
-        # convert knobs [0,10] to gain multipliers
-        bass /= 10.0
-        mid /= 10.0
-        treble /= 10.0
-
-        # two crossover frequencies
-        low = self.low_lp.process(x, a=0.02)
-        low_mid = self.mid_lp.process(x, a=0.20)
-
-        # split into bands
+        # 3. Split into bands (Perfect Reconstruction)
         bass_band = low
-        mid_band = low_mid - low
-        treble_band = self.high_hp.process(x, a=0.20)
+        mid_band = low_mid - low      # (Bass + Mids) - Bass = Mids
+        treble_band = x - low_mid     # Original - (Bass + Mids) = Treble
 
-        # apply gains
-        bass_band *= bass
-        mid_band *= mid
-        treble_band *= treble
+        # 4. Apply gains 
+        bass_band *= params.bass / 10.0
+        mid_band *= params.mids / 10.0
+        treble_band *= params.treble / 10.0
 
         return bass_band + mid_band + treble_band

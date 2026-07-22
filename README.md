@@ -20,7 +20,6 @@ commands to fetch changes from main into (git bash)
 git checkout main
 git pull origin main
 
-
 Assuming you're currently on your own branch and changes are merged into main, do this
 
 Commit your work
