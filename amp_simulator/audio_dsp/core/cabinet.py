@@ -3,7 +3,7 @@ import soundfile as sf
 import math
 
 class CabinetIR:
-    def __init__(self, ir_path=None, block_size=256):
+    def __init__(self, block_size, ir_path=None):
         self.ir = None
         self.ir_fft = None
         self.block_size = block_size
@@ -13,6 +13,8 @@ class CabinetIR:
         if ir_path:
             self.load_ir(ir_path)
 
+    # define load_ir and store to compute FFT just once upon
+    # since FFT(IR) does not depend on the current sample
     def load_ir(self, path):
         data, sr = sf.read(path)
 
@@ -20,14 +22,12 @@ class CabinetIR:
         if data.ndim > 1:
             data = data.mean(axis=1)
 
-        # convert to float and normalize
         data = data.astype(np.float32)
         data /= np.max(np.abs(data)) + 1e-12
 
         self.ir = data
 
-        # Size = M + N - 1
-        min_fft_size = self.block_size + len(self.ir) - 1
+        min_fft_size = self.block_size + len(self.ir) - 1   # Size = M + N - 1
         
         # round up to the next power of 2
         self.fft_size = 1 << math.ceil(math.log2(min_fft_size))
@@ -43,7 +43,7 @@ class CabinetIR:
         self.fft_buffer = np.zeros(self.fft_size, dtype=np.float32)
 
     def reset(self):
-        if self.fft_buffer is not None:
+        if (self.fft_buffer is not None):
             self.fft_buffer.fill(0)
 
     def process(self, x):
@@ -58,14 +58,9 @@ class CabinetIR:
         # insert the new audio at the end
         self.fft_buffer[-self.block_size:] = x
 
-        # X = forward FFT of x
-        X = np.fft.rfft(self.fft_buffer)
+        # Apply convolution theorem 
+        X = np.fft.rfft(self.fft_buffer) # FFT(x)
+        Y = X * self.ir_fft              # FFT(IR) ⋅ FFT(X)
+        y = np.fft.irfft(Y)              # y = IFFT(Y)
 
-        # convolution via complex multiplication
-        Y = X * self.ir_fft
-
-        # inverse FFT
-        y = np.fft.irfft(Y)
-
-        # return 
         return y[-self.block_size:].astype(np.float32)
