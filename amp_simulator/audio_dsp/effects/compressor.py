@@ -5,29 +5,14 @@ class Compressor:
     def __init__(self):
         self.env_filter = OnePoleFilter()
         self.gain = 1.0
-        
-        # FIX 1: Increased from 0.8 to 0.95. 
-        # This prevents the envelope from plunging to zero every single time 
-        # the audio wave crosses the center line, stopping the "buzzing" effect.
         self.env_coeff = 0.95 
 
     def process(self, x, params):
-        # Map GUI knobs 
         threshold = self.map_knob(params.compressor_threshold, 0.01, 1.0)
         ratio = self.map_knob(params.compressor_ratio, 1.0, 20.0)
-        
-        # FIX 2: Attack coefficients moved to [0.90, 0.999]
-        # In DSP, anything below 0.90 is basically "instantaneous". 
-        # This maps your knob so 0 is very fast, and 10 is actually a smooth glide.
         a_attack = self.map_knob(10.0 - params.compressor_attack, 0.90, 0.999)
-
-        # FIX 3: Decay coefficients moved to [0.99, 0.9999]
-        # Decay needs to be much slower than attack so the compressor doesn't 
-        # instantly let go of the note. 0.9999 creates a nice, long release tail.
         a_decay = self.map_knob(params.compressor_decay, 0.99, 0.999)
-        
-        # makeup gain to +[0-12 dB]
-        makeup = self.map_knob(params.compressor_makeup, 1.0, 4.0)
+        makeup = self.map_knob(params.compressor_makeup, 1.0, 4.0) # makeup gain to +[0-12 dB]
 
         y = np.zeros_like(x)
 

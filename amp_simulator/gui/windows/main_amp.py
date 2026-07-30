@@ -4,99 +4,84 @@ def create_tab(app):
     cabinet = app.cabinet
     params = app.params
 
-    def update_gain(sender, app_data):
-        params.gain = app_data
-
-    def update_drive(sender, app_data):
-        params.drive = app_data
-
-    def update_bass(sender, app_data):
-        params.bass = app_data
-
-    def update_mid(sender, app_data):
-        params.mids = app_data
-
-    def update_treble(sender, app_data):
-        params.treble = app_data
-
-    def update_volume(sender, app_data):
-        params.volume = app_data
+    def create_param_callback(parameter):
+        def callback(sender, app_data):
+            setattr(params, parameter, app_data)
+        return callback
 
     def update_ir(sender, app_data):
         cabinet.load_ir(app.ir_list[app.ir_list.index(app_data)])
-        
-    def toggle_ir(sender, app_data):
-        params.ir_enabled = app_data
 
+    # Main Amp UI
+    dpg.add_text("Main Amp Controls")
+
+    dpg.add_separator()
+
+    # Gain knob
     dpg.add_knob_float(
         label="Gain",
         default_value=params.gain,
         min_value=0.0,
         max_value=10.0,
-        callback=update_gain
+        callback=create_param_callback("gain")
     )
 
-    dpg.add_spacing(count=2)
-
+    # Drive knob
     dpg.add_knob_float(
         label="Drive",
         default_value=params.drive,
         min_value=0.0,
         max_value=10.0,
-        callback=update_drive
+        callback=create_param_callback("drive")
     )
 
-    dpg.add_spacing(count=2)
-
+    # Volume knob
     dpg.add_knob_float(
         label="Volume",
         default_value=params.volume,
         min_value=0.0,
         max_value=10.0,
-        callback=update_volume
+        callback=create_param_callback("volume")
     )
 
-    dpg.add_spacing(count=2)
-
+    # Bass knob
     dpg.add_knob_float(
         label="Bass",
         default_value=params.bass,
         min_value=0.0,
         max_value=10.0,
-        callback=update_bass
+        callback=create_param_callback("bass")
     )
 
-    dpg.add_spacing(count=2)
-
+    # Mids knob
     dpg.add_knob_float(
         label="Mids",
         default_value=params.mids,
         min_value=0.0,
         max_value=10.0,
-        callback=update_mid
+        callback=create_param_callback("mids")
     )
 
-    dpg.add_spacing(count=2)
-
+    # Treble knob
     dpg.add_knob_float(
         label="Treble",
         default_value=params.treble,
         min_value=0.0,
         max_value=10.0,
-        callback=update_treble
+        callback=create_param_callback("treble")
     )
 
-    dpg.add_spacing(count=2)
-
+    # IR dropdown menu
     dpg.add_combo(
         label="Impulse Response",
-        items = app.ir_list,
+        items=app.ir_list,
         default_value=app.ir_list[0],
         callback=update_ir
     )
 
+    # IR Checkbox
     dpg.add_checkbox(
         label="Enable IR",
         default_value=params.ir_enabled,
-        callback=toggle_ir
-)
+        callback=create_param_callback("ir_enabled")
+    )

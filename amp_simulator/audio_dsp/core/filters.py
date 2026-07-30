@@ -1,16 +1,22 @@
 import numpy as np
 
+"""
+Module contains the filters used throughout the project
+
+High pass is currently unused
+"""
+
 class OnePoleFilter:
     def __init__(self):
         self.y = 0.0
 
     def process_sample(self, x, a):
-        # processes a single sample
+        # first order IIR filter.
         self.y = (1 - a) * x + a * self.y
         return self.y
-
+    
+    # processes an array of samples
     def process(self, x, a):
-        # processes an array of samples
         y = np.zeros_like(x)
         a_clipped = np.clip(a, 0.0, 0.999)
 
@@ -23,6 +29,8 @@ class OnePoleFilter:
         self.y = 0.0
 
 
+# High Pass currently unused in the program
+"""
 class OnePoleHighPass:
     def __init__(self):
         self.x_prev = 0.0
@@ -47,3 +55,4 @@ class OnePoleHighPass:
     def reset(self):
         self.x_prev = 0.0
         self.y = 0.0
+"""

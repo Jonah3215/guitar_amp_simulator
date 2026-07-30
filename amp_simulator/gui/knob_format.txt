@@ -1,7 +1,0 @@
-dpg.add_knob_float(
-    label="label",
-    default_value=1.0,
-    min_value=0.0,
-    max_value=10.0,
-    tag="tag"
-)
