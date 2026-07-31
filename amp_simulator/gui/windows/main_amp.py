@@ -17,59 +17,73 @@ def create_tab(app):
 
     dpg.add_separator()
 
-    # Gain knob
-    dpg.add_knob_float(
-        label="Gain",
-        default_value=params.gain,
-        min_value=0.0,
-        max_value=10.0,
-        callback=create_param_callback("gain")
-    )
+        # Input Stage
+    dpg.add_text("Input Stage")
 
-    # Drive knob
-    dpg.add_knob_float(
-        label="Drive",
-        default_value=params.drive,
-        min_value=0.0,
-        max_value=10.0,
-        callback=create_param_callback("drive")
-    )
+    with dpg.group(horizontal=True):
+        dpg.add_knob_float(
+            label="Gain",
+            default_value=app.params.gain,
+            min_value=0.0,
+            max_value=10.0,
+            callback=create_param_callback("gain")
+        )
 
-    # Volume knob
-    dpg.add_knob_float(
-        label="Volume",
-        default_value=params.volume,
-        min_value=0.0,
-        max_value=10.0,
-        callback=create_param_callback("volume")
-    )
+        dpg.add_spacer(width=25)
 
-    # Bass knob
-    dpg.add_knob_float(
-        label="Bass",
-        default_value=params.bass,
-        min_value=0.0,
-        max_value=10.0,
-        callback=create_param_callback("bass")
-    )
+        dpg.add_knob_float(
+            label="Drive",
+            default_value=app.params.drive,
+            min_value=0.0,
+            max_value=10.0,
+            callback=create_param_callback("drive")
+        )
 
-    # Mids knob
-    dpg.add_knob_float(
-        label="Mids",
-        default_value=params.mids,
-        min_value=0.0,
-        max_value=10.0,
-        callback=create_param_callback("mids")
-    )
+        dpg.add_spacer(width=25)
 
-    # Treble knob
-    dpg.add_knob_float(
-        label="Treble",
-        default_value=params.treble,
-        min_value=0.0,
-        max_value=10.0,
-        callback=create_param_callback("treble")
-    )
+        dpg.add_knob_float(
+            label="Volume",
+            default_value=app.params.volume,
+            min_value=0.0,
+            max_value=10.0,
+            callback=create_param_callback("volume")
+        )
+
+
+    dpg.add_separator()
+
+
+    # EQ
+    dpg.add_text("EQ")
+
+    with dpg.group(horizontal=True):
+        dpg.add_knob_float(
+            label="Bass",
+            default_value=params.bass,
+            min_value=0.0,
+            max_value=10.0,
+            callback=create_param_callback("bass")
+        )
+
+        dpg.add_spacer(width=25)
+
+        dpg.add_knob_float(
+            label="Mids",
+            default_value=params.mids,
+            min_value=0.0,
+            max_value=10.0,
+            callback=create_param_callback("mids")
+        )
+
+        dpg.add_spacer(width=25)
+
+        dpg.add_knob_float(
+            label="Treble",
+            default_value=params.treble,
+            min_value=0.0,
+            max_value=10.0,
+            callback=create_param_callback("treble")
+        )
 
     # IR dropdown menu
     dpg.add_combo(

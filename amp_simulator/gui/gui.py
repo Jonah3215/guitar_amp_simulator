@@ -8,7 +8,6 @@ from .windows.settings import create_tab as create_settings
 
 
 def start_gui(app):
-
     dpg.create_context()
 
     dpg.create_viewport(

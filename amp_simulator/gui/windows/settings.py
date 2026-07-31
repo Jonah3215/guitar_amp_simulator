@@ -75,6 +75,7 @@ def create_tab(app):
         app.audio_engine.restart()
 
 
+
     dpg.add_text("Audio Settings")
 
     dpg.add_separator()
