@@ -18,8 +18,8 @@ def create_tab(app):
 
     with dpg.plot(
         label="Dry Signal",
-        height=250,
-        width=700,
+        height=300,
+        width=955,
         no_mouse_pos=True,
         no_box_select=True,
         no_menus=True
@@ -60,8 +60,8 @@ def create_tab(app):
 
     with dpg.plot(
         label="Wet Signal",
-        height=250,
-        width=700,
+        height=300,
+        width=955,
         no_mouse_pos=True,
         no_box_select=True,
         no_menus=True
@@ -105,8 +105,8 @@ def create_tab(app):
 
     with dpg.plot(
         label="Frequency Spectrum",
-        height=300,
-        width=700,
+        height=325,
+        width=955,
         no_mouse_pos=True,
         no_box_select=True,
         no_menus=True,

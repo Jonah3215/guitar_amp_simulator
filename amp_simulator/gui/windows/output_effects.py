@@ -1,5 +1,6 @@
 import dearpygui.dearpygui as dpg
 
+
 def create_tab(app):
     params = app.params
 
@@ -8,79 +9,77 @@ def create_tab(app):
             setattr(params, parameter, app_data)
         return callback
 
+
+    def add_knob(label, parameter):
+        dpg.add_knob_float(
+            label=label,
+            default_value=getattr(params, parameter),
+            min_value=0.0,
+            max_value=10.0,
+            callback=create_param_callback(parameter)
+        )
+
+
+    def add_effect(title, enabled_param, knobs):
+        # Effect title
+        dpg.add_text(title)
+
+        # Checkbox and knobs in horizontal row
+        with dpg.group(horizontal=True):
+
+            # Enable checkbox
+            dpg.add_checkbox(
+                label="Enabled",
+                default_value=getattr(params, enabled_param),
+                callback=create_param_callback(enabled_param)
+            )
+
+            dpg.add_spacer(width=30)
+
+            # Knobs
+            for label, parameter in knobs:
+                add_knob(label, parameter)
+                dpg.add_spacer(width=30)
+
+        dpg.add_separator()
+
+
+    # Output Effects UI
     dpg.add_text("Output Effect Controls")
 
     dpg.add_separator()
 
+
     # Reverb
-    dpg.add_text("Reverb")
-
-    dpg.add_checkbox(
-        label="Enabled",
-        default_value=params.reverb_enabled,
-        callback=create_param_callback("reverb_enabled")
+    add_effect(
+        "Reverb",
+        "reverb_enabled",
+        [
+            ("Decay", "reverb_decay"),
+            ("Damping", "reverb_damping"),
+            ("Mix", "reverb_mix")
+        ]
     )
 
-    dpg.add_knob_float(
-        label="Decay",
-        default_value=params.reverb_decay,
-        min_value=0.0,
-        max_value=10.0,
-        callback=create_param_callback("reverb_decay")
+
+    # Limiter
+    add_effect(
+        "Limiter",
+        "limiter_enabled",
+        [
+            ("Ceiling", "limiter_ceiling"),
+            ("Release", "limiter_release")
+        ]
     )
 
-    dpg.add_knob_float(
-        label="Damping",
-        default_value=params.reverb_damping,
-        min_value=0.0,
-        max_value=10.0,
-        callback=create_param_callback("reverb_damping")
-    )
-
-    dpg.add_knob_float(
-        label="Mix",
-        default_value=params.reverb_mix,
-        min_value=0.0,
-        max_value=10.0,
-        callback=create_param_callback("reverb_mix")
-    )
-
-    dpg.add_separator()
 
     # Master Volume
     dpg.add_text("Master Volume")
 
-    dpg.add_knob_float(
-        label="Volume",
-        default_value=params.master_volume,
-        min_value=0.0,
-        max_value=10.0,
-        callback=create_param_callback("master_volume")
-    )
+    with dpg.group(horizontal=True):
+        add_knob(
+            "Volume",
+            "master_volume"
+        )
 
     dpg.add_separator()
-
-    # Limiter
-    dpg.add_text("Limiter")
-
-    dpg.add_checkbox(
-        label="Enabled",
-        default_value=params.limiter_enabled,
-        callback=create_param_callback("limiter_enabled")
-    )
-
-    dpg.add_knob_float(
-        label="Ceiling",
-        default_value=params.limiter_ceiling,
-        min_value=0.0,
-        max_value=10.0,
-        callback=create_param_callback("limiter_ceiling")
-    )
-
-    dpg.add_knob_float(
-        label="Release",
-        default_value=params.limiter_release,
-        min_value=0.0,
-        max_value=10.0,
-        callback=create_param_callback("limiter_release")
-    )
