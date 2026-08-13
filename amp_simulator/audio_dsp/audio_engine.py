@@ -10,14 +10,17 @@ class AudioEngine:
         self.app = app
         self.stream = None
 
-        self.update_analysis_config()
-        
+        self.app.analysis.update_frequency_axis(
+            self.app.config.sample_rate,
+            self.app.config.block_size
+        )
+
     def start(self):
         def callback(indata, outdata, frames, time, status):
             x = indata[:, 0]
 
             y = self.process(x)
-
+    
             # update waveform
             self.app.analysis.dry_waveform = x.copy()
             self.app.analysis.wet_waveform = y.copy()
@@ -45,7 +48,7 @@ class AudioEngine:
                 self.app.config.input_device,
                 self.app.config.output_device
             ),
-            channels=2,
+            #channels=2,
             callback=callback
         )
 
@@ -63,19 +66,15 @@ class AudioEngine:
 
         return x
 
-    def stop(self):
+    def restart(self):
         if (self.stream is not None):
             self.stream.stop()
             self.stream.close()
             self.stream = None
 
-    def restart(self):
-        self.stop()
-        self.update_analysis_config()
-        self.start()
-        
-    def update_analysis_config(self):
         self.app.analysis.update_frequency_axis(
             self.app.config.sample_rate,
             self.app.config.block_size
         )
+
+        self.start()

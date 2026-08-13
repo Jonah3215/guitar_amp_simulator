@@ -45,7 +45,6 @@ def create_tab(app):
     dpg.add_text("Input Effect Controls")
     dpg.add_separator()
 
-
     # Noise Gate
     add_effect(
         "Noise Gate",
@@ -56,7 +55,6 @@ def create_tab(app):
             ("Decay", "noise_gate_decay")
         ]
     )
-
 
     # Compressor
     add_effect(
@@ -71,7 +69,6 @@ def create_tab(app):
         ]
     )
 
-
     # Overdrive
     add_effect(
         "Overdrive",
@@ -83,7 +80,6 @@ def create_tab(app):
         ]
     )
 
-
     # Chorus
     add_effect(
         "Chorus",
@@ -94,7 +90,6 @@ def create_tab(app):
             ("Mix", "chorus_mix")
         ]
     )
-
 
     # Delay
     add_effect(

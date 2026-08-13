@@ -17,4 +17,4 @@ class ThreeBandEQ:
         mid_band *= params.mids / 10.0
         treble_band *= params.treble / 10.0
 
-        return bass_band + mid_band + treble_band
+        return (bass_band + mid_band + treble_band)

@@ -12,15 +12,6 @@ def create_tab(app):
 
         for index, device in enumerate(devices):
 
-            print(
-                index,
-                device["name"],
-                "IN:",
-                device["max_input_channels"],
-                "OUT:",
-                device["max_output_channels"]
-            )
-
             device_name = f"{index}: {device['name']}"
 
             if device["max_input_channels"] > 0:
@@ -28,11 +19,6 @@ def create_tab(app):
 
             if device["max_output_channels"] > 0:
                 output_devices.append(device_name)
-
-
-        print("Input list:", input_devices)
-        print("Output list:", output_devices)
-
 
         dpg.configure_item(
             "input_device",
@@ -44,37 +30,21 @@ def create_tab(app):
             items=output_devices
         )
 
-
-        print("Audio devices refreshed.")
-
-
     def apply_settings():
-
-        config.sample_rate = int(
-            dpg.get_value("sample_rate")
-        )
-
-        config.block_size = int(
-            dpg.get_value("block_size")
-        )
+        config.sample_rate = int(dpg.get_value("sample_rate"))
+        config.block_size = int(dpg.get_value("block_size"))
 
         input_selection = dpg.get_value("input_device")
         output_selection = dpg.get_value("output_device")
 
         if input_selection:
-            config.input_device = int(
-                input_selection.split(":")[0]
-            )
+            config.input_device = int(input_selection.split(":")[0])
 
         if output_selection:
-            config.output_device = int(
-                output_selection.split(":")[0]
-            )
+            config.output_device = int(output_selection.split(":")[0])
 
         # Restart the audio engine using the new settings
         app.audio_engine.restart()
-
-
 
     dpg.add_text("Audio Settings")
 

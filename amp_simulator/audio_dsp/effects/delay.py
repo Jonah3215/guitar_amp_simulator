@@ -19,16 +19,13 @@ class Delay:
         # convert milliseconds to samples. 
         delay_samples = int(delay_ms * (self.sample_rate / 1000.0))
         
-        # ensure delay is strictly within our buffer limits.
         delay_samples = np.clip(delay_samples, 1, self.buffer_size - 1)
 
         y = np.zeros_like(x)
 
         for i, sample in enumerate(x):
-            # calculate read position
             read_pos = (self.write_index - delay_samples) % self.buffer_size
             
-            # read delayed sample 
             delayed_sample = self.buffer[read_pos]
 
             # mix dry and wet signals for the output
@@ -38,7 +35,6 @@ class Delay:
             new_buffer_val = sample + (feedback * delayed_sample)
             self.buffer[self.write_index] = new_buffer_val
 
-            # advance write pointer and wrap around
             self.write_index = (self.write_index + 1) % self.buffer_size
 
         return y

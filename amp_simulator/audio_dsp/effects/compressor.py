@@ -16,20 +16,16 @@ class Compressor:
 
         y = np.zeros_like(x)
 
-        # process each sample 
         for i, sample in enumerate(x):
             
-            # estimate envelope
             envelope = self.env_filter.process_sample(abs(sample), self.env_coeff)
 
-            # compute desired gain
             target_gain = self.compute_gain(envelope, threshold, ratio)
 
             # decide whether to use gain or decay
             a = a_attack if target_gain < self.gain else a_decay
             self.gain = (1 - a) * target_gain + a * self.gain
 
-            # apply to output
             y[i] = sample * self.gain * makeup
 
         return y
@@ -39,18 +35,14 @@ class Compressor:
         if envelope <= threshold or envelope < 1e-6:
             return 1.0
             
-        # convert to dB scale for ratio math
         envelope_db = 20.0 * np.log10(envelope)
         threshold_db = 20.0 * np.log10(threshold)
         
-        # calculate the overshoot and the required reduction
         overshoot_db = envelope_db - threshold_db
         gain_reduction_db = overshoot_db * (1.0 - (1.0 / ratio))
     
-        # convert reduction back to linear multiplier (< 1.0)
         target_gain = 10.0 ** (-gain_reduction_db / 20.0)
         
-        # clamp to ensure floating-point anomalies doesn't cause gain > 1.0
         return np.clip(target_gain, 0.0, 1.0)
 
     @staticmethod

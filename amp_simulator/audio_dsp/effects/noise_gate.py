@@ -23,7 +23,7 @@ class NoiseGate:
         for i, sample in enumerate(x):
             current_env = self.env_filter.process_sample(abs(sample), env_coeff)
 
-            # decide target state using hysteresis
+            # set target gain
             if (self.gain > 0.5):
                 target_gain = 1.0 if (current_env > threshold_close) else 0.0
             else:

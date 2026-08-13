@@ -1,6 +1,5 @@
 import dearpygui.dearpygui as dpg
 
-
 def create_tab(app):
     params = app.params
 
@@ -43,12 +42,10 @@ def create_tab(app):
 
         dpg.add_separator()
 
-
     # Output Effects UI
     dpg.add_text("Output Effect Controls")
 
     dpg.add_separator()
-
 
     # Reverb
     add_effect(
@@ -61,7 +58,6 @@ def create_tab(app):
         ]
     )
 
-
     # Limiter
     add_effect(
         "Limiter",
@@ -71,7 +67,6 @@ def create_tab(app):
             ("Release", "limiter_release")
         ]
     )
-
 
     # Master Volume
     dpg.add_text("Master Volume")

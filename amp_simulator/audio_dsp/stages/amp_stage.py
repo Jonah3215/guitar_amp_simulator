@@ -23,11 +23,11 @@ def amp_drive(x, drive):
     if mix == 0.0:
         return x
     
-    # gain maxes at only 4.0
+    # gain maxes at  4.0
     drive_gain = 1.0 + (drive * 0.3)
     x_driven = x * drive_gain
     
-    # Asymmetric Tube Soft-Clipping
+    # asymmetric tube soft-clipping
     pos = np.tanh(x_driven)
     neg = np.tanh(0.8 * x_driven) / 0.8
     

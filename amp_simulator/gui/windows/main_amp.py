@@ -9,83 +9,60 @@ def create_tab(app):
             setattr(params, parameter, app_data)
         return callback
 
+    def add_knob(label, parameter):
+        dpg.add_knob_float(
+            label=label,
+            default_value=getattr(params, parameter),
+            min_value=0.0,
+            max_value=10.0,
+            callback=create_param_callback(parameter)
+        )
+
+    def add_section(title, knobs):
+    # Section title
+        dpg.add_text(title)
+
+        # Everything in this row
+        with dpg.group(horizontal=True):
+
+            # Knobs
+            for label, parameter in knobs:
+                add_knob(label, parameter)
+                dpg.add_spacer(width=30)
+
+        dpg.add_separator()
+
     def update_ir(sender, app_data):
-        cabinet.load_ir(app.ir_list[app.ir_list.index(app_data)])
+        cabinet.load_ir(app_data)
 
     # Main Amp UI
+    
     dpg.add_text("Main Amp Controls")
-
     dpg.add_separator()
 
-        # Input Stage
-    dpg.add_text("Input Stage")
-
-    with dpg.group(horizontal=True):
-        dpg.add_knob_float(
-            label="Gain",
-            default_value=app.params.gain,
-            min_value=0.0,
-            max_value=10.0,
-            callback=create_param_callback("gain")
-        )
-
-        dpg.add_spacer(width=25)
-
-        dpg.add_knob_float(
-            label="Drive",
-            default_value=app.params.drive,
-            min_value=0.0,
-            max_value=10.0,
-            callback=create_param_callback("drive")
-        )
-
-        dpg.add_spacer(width=25)
-
-        dpg.add_knob_float(
-            label="Volume",
-            default_value=app.params.volume,
-            min_value=0.0,
-            max_value=10.0,
-            callback=create_param_callback("volume")
-        )
-
-
-    dpg.add_separator()
-
+    # Input Stage
+    add_section(
+        "Input Stage",
+        [
+            ("Gain", "gain"),
+            ("Drive", "drive"),
+            ("Volume", "volume")
+        ]
+    )
 
     # EQ
-    dpg.add_text("EQ")
+    add_section(
+        "EQ",
+        [
+            ("Bass", "bass"),
+            ("Mids", "mids"),
+            ("Treble", "treble")
+        ]
+    )
 
-    with dpg.group(horizontal=True):
-        dpg.add_knob_float(
-            label="Bass",
-            default_value=params.bass,
-            min_value=0.0,
-            max_value=10.0,
-            callback=create_param_callback("bass")
-        )
+    # Cabinet
+    dpg.add_text("Cabinet")
 
-        dpg.add_spacer(width=25)
-
-        dpg.add_knob_float(
-            label="Mids",
-            default_value=params.mids,
-            min_value=0.0,
-            max_value=10.0,
-            callback=create_param_callback("mids")
-        )
-
-        dpg.add_spacer(width=25)
-
-        dpg.add_knob_float(
-            label="Treble",
-            default_value=params.treble,
-            min_value=0.0,
-            max_value=10.0,
-            callback=create_param_callback("treble")
-        )
-
-    # IR dropdown menu
     dpg.add_combo(
         label="Impulse Response",
         items=app.ir_list,
@@ -93,7 +70,6 @@ def create_tab(app):
         callback=update_ir
     )
 
-    # IR Checkbox
     dpg.add_checkbox(
         label="Enable IR",
         default_value=params.ir_enabled,

@@ -1,18 +1,14 @@
 import dearpygui.dearpygui as dpg
 
-
 def create_tab(app):
-
     analysis = app.analysis
-
-
+    
     dpg.add_text("Signal Analysis")
     dpg.add_separator()
 
-
-    # ============================================================
-    # DRY WAVEFORM
-    # ============================================================
+    ################
+    # DRY WAVEFORM #
+    ################
 
     dpg.add_text("Dry Waveform")
 
@@ -44,17 +40,15 @@ def create_tab(app):
                 tag="dry_waveform"
             )
 
-
     dpg.set_axis_limits(
         "dry_waveform_y",
         -1.0,
         1.0
     )
-
-
-    # ============================================================
-    # WET WAVEFORM
-    # ============================================================
+    
+    ################
+    # WET WAVEFORM #
+    ################
 
     dpg.add_text("Wet Waveform")
 
@@ -66,7 +60,6 @@ def create_tab(app):
         no_box_select=True,
         no_menus=True
     ):
-
         dpg.add_plot_axis(
             dpg.mvXAxis,
             label="Samples",
@@ -78,7 +71,6 @@ def create_tab(app):
             label="Amplitude",
             tag="wet_waveform_y"
         ):
-
             dpg.add_line_series(
                 [],
                 [],
@@ -86,22 +78,20 @@ def create_tab(app):
                 tag="wet_waveform"
             )
 
-
     dpg.set_axis_limits(
         "wet_waveform_y",
         -1.0,
         1.0
     )
 
-
     dpg.add_separator()
 
     dpg.add_text("Spectrum Analyzer")
 
 
-    # ============================================================
-    # SPECTRUM
-    # ============================================================
+    ############
+    # SPECTRUM #
+    ############
 
     with dpg.plot(
         label="Frequency Spectrum",
@@ -112,7 +102,6 @@ def create_tab(app):
         no_menus=True,
         tag="spectrum_plot"
     ):
-
         dpg.add_plot_legend()
 
         dpg.add_plot_axis(
@@ -126,21 +115,18 @@ def create_tab(app):
             label="dB",
             tag="spectrum_y"
         ):
-
             dpg.add_line_series(
                 [],
                 [],
                 label="Dry Spectrum",
                 tag="dry_spectrum"
             )
-
             dpg.add_line_series(
                 [],
                 [],
                 label="Wet Spectrum",
                 tag="wet_spectrum"
             )
-
 
     # Spectrum always starts at origin
     dpg.set_axis_limits(
@@ -155,27 +141,25 @@ def create_tab(app):
         40
     )
 
-    # ============================================================
-    # UPDATE FUNCTION
-    # ============================================================
+    ###################
+    # UPDATE FUNCTION #
+    ###################
 
     def update_analysis():
-        # ----------------------------
-        # Waveforms
-        # ----------------------------
-
+        #############
+        # Waveforms #
+        #############
         if analysis.dry_waveform.size > 0:
 
             waveform_x = list(
                 range(len(analysis.dry_waveform))
             )
 
-
             dpg.set_value(
                 "dry_waveform",
                 [
                     waveform_x,
-                    analysis.dry_waveform.tolist()
+                    analysis.dry_waveform
                 ]
             )
 
@@ -183,10 +167,9 @@ def create_tab(app):
                 "wet_waveform",
                 [
                     waveform_x,
-                    analysis.wet_waveform.tolist()
+                    analysis.wet_waveform
                 ]
             )
-
 
             # Dynamically update x-axis
             dpg.set_axis_limits(
@@ -201,31 +184,29 @@ def create_tab(app):
                 len(waveform_x)
             )
 
-
-        # ----------------------------
-        # Spectrum
-        # ----------------------------
+        ############
+        # Spectrum #
+        ############
 
         if ((analysis.frequencies.size > 0)
         and (analysis.dry_spectrum.size > 0)
         and (analysis.wet_spectrum.size > 0)):
-
+            
             dpg.set_value(
                 "dry_spectrum",
                 [
-                    analysis.frequencies.tolist(),
-                    analysis.dry_spectrum.tolist()
+                    analysis.frequencies,
+                    analysis.dry_spectrum
                 ]
             )
 
             dpg.set_value(
                 "wet_spectrum",
                 [
-                    analysis.frequencies.tolist(),
-                    analysis.wet_spectrum.tolist()
+                    analysis.frequencies,
+                    analysis.wet_spectrum
                 ]
             )
-
 
             # Update frequency axis if sample rate changes
             dpg.set_axis_limits(

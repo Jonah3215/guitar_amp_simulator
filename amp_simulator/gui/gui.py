@@ -6,7 +6,6 @@ from .windows.output_effects import create_tab as create_out_effects
 from .windows.analysis import create_tab as create_analytics_viewer
 from .windows.settings import create_tab as create_settings
 
-
 def start_gui(app):
     dpg.create_context()
 
@@ -24,7 +23,6 @@ def start_gui(app):
         no_resize=True,
         no_move=True,
     ):
-
         with dpg.tab_bar():
 
             with dpg.tab(label="Main Amp"):
@@ -42,19 +40,15 @@ def start_gui(app):
             with dpg.tab(label="Settings"):
                 create_settings(app)
 
-
     dpg.setup_dearpygui()
     dpg.show_viewport()
 
-
     # Main GUI loop
     while dpg.is_dearpygui_running():
-
         # Update plots at GUI refresh rate
         if hasattr(app, "update_analysis"):
             app.update_analysis()
 
         dpg.render_dearpygui_frame()
-
 
     dpg.destroy_context()
