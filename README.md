@@ -128,7 +128,7 @@ The application processes audio at **48 kHz**. (Sampling rate can be altered in 
 Clone the repository:
 
 ```bash
-git clone YOUR_REPOSITORY_URL
+git clone https://github.com/Jonah3215/guitar_amp_simulator
 cd guitar_amp_simulator
 ```
 
