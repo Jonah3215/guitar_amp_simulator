@@ -1,11 +1,5 @@
 import numpy as np
 
-"""
-Module contains the filters used throughout the project
-
-High pass is currently unused
-"""
-
 class OnePoleFilter:
     def __init__(self):
         self.y = 0.0

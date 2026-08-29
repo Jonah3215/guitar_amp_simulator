@@ -12,7 +12,6 @@ class DelayLine:
         read_index = self.write_index
         delayed = self.buffer[read_index]
         
-        # 'absorption' acts as our filter coefficient (higher = darker/more absorbed)
         filtered = self.filter.process_sample(delayed, absorption)
         feedback_signal = filtered * feedback # decay is mapped to feedback when passed from reverb
         
@@ -37,8 +36,7 @@ class Reverb:
         self.pre_delay_buffer = np.zeros(self.pre_delay_samples)
         self.pre_delay_write_index = 0
 
-        # Irregular delay lengths prevent periodic echo patterns
-        # and reduce metallic resonances.
+        # Irregular delay lengths prevent periodic echo patterns and reduce metallic resonances.
         delay_times_ms = [29, 37, 43, 53]
 
         self.delay_lines = []

@@ -48,7 +48,7 @@ class AudioEngine:
                 self.app.config.input_device,
                 self.app.config.output_device
             ),
-            #channels=2,
+            # channels=2,
             callback=callback
         )
 

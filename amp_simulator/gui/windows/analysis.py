@@ -215,5 +215,4 @@ def create_tab(app):
                 analysis.frequencies[-1]
             )
 
-    print("Analysis tab initialized")
     app.update_analysis = update_analysis

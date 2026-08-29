@@ -62,9 +62,7 @@ class AppContext:
             if f.lower().endswith(".wav")
         ]
 
-        # Load the first cabinet IR if one is available
-        if self.ir_list:
-            self.cabinet.load_ir(self.ir_list[0])
+        self.cabinet.load_ir(self.ir_list[0])
 
         # audio stream handle
         self.audio_engine = AudioEngine(self)

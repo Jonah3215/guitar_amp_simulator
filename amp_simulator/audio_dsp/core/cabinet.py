@@ -14,7 +14,6 @@ class CabinetIR:
             self.load_ir(ir_path)
 
     # define load_ir and store to compute FFT just once upon
-    # since FFT(IR) does not depend on the current sample
     def load_ir(self, path):
         data, sr = sf.read(path)
 

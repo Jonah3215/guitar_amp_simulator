@@ -29,10 +29,8 @@ class Chorus:
             lfo_val = np.sin(self.phase)
             self.phase = (self.phase + phase_increment) % (2.0 * np.pi)
 
-            # Calculate current delay time (oscillates around center_delay_ms)
             delay_ms = self.center_delay_ms + (depth * lfo_val)
 
-            # Convert delay from ms to samples
             delay_samples = delay_ms * (self.sample_rate / 1000.0)
             delay_samples = np.clip(delay_samples, 1, self.buffer_size - 2)
 
@@ -48,10 +46,9 @@ class Chorus:
         return y
 
     def interpolate(self, position):
-        idx1 = int(np.floor(position))         # Find lower index
-        idx2 = (idx1 + 1) % self.buffer_size    # Find upper index
+        idx1 = int(np.floor(position))
+        idx2 = (idx1 + 1) % self.buffer_size
         
-        # Find fractional distance between the two indices
         frac = position - idx1
         
         # Blend samples based on proximity

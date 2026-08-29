@@ -24,11 +24,9 @@ class Limiter:
             envelope = self.env_filter.process_sample(abs(sample), self.env_coeff)
             target_gain = self.compute_gain(envelope, ceiling)
     
-            # if target_gain is lower than current gain, a peak hit and we must reduce volume
             if target_gain < self.gain:
                 coeff = self.attack_coeff
             else:
-                # otherwise, the peak has passed and we can gradually restore volume
                 coeff = release_coeff
 
             self.gain = (1.0 - coeff) * target_gain + coeff * self.gain
@@ -41,7 +39,6 @@ class Limiter:
         if envelope <= ceiling or envelope < 1e-6:
             return 1.0
             
-        # calculate the exact ratio needed to get back to cieling
         return np.clip(ceiling / envelope, 0.0, 1.0)
 
     @staticmethod

@@ -11,12 +11,10 @@ class Delay:
         self.write_index = 0
 
     def process(self, x, params):
-        # map GUI knobs
         delay_ms = self.map_knob(params.delay_time, 50.0, 800.0) # [50, 800] ms
         feedback = self.map_knob(params.delay_feedback, 0.0, 0.95) 
         mix = self.map_knob(params.delay_mix, 0.0, 1.0)
 
-        # convert milliseconds to samples. 
         delay_samples = int(delay_ms * (self.sample_rate / 1000.0))
         
         delay_samples = np.clip(delay_samples, 1, self.buffer_size - 1)
@@ -28,10 +26,8 @@ class Delay:
             
             delayed_sample = self.buffer[read_pos]
 
-            # mix dry and wet signals for the output
             y[i] = (1.0 - mix) * sample + (mix * delayed_sample)
 
-            # write current sample + feedback * delayed_sample
             new_buffer_val = sample + (feedback * delayed_sample)
             self.buffer[self.write_index] = new_buffer_val
 
