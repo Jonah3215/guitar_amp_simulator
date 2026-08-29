@@ -49,11 +49,11 @@ class AppContext:
         # dynmically create IR list
         ir_folder = os.path.abspath(
             os.path.join(
-                os.path.dirname(__file__), 
+                os.path.dirname(__file__),
                 "..",
-                "audio_dsp", 
+                "audio_dsp",
                 "irs"
-            )   
+            )
         )
 
         self.ir_list = [
@@ -62,8 +62,9 @@ class AppContext:
             if f.lower().endswith(".wav")
         ]
 
-        # load default cabinet IR
-        self.cabinet.load_ir(self.ir_list[0])
+        # Load the first cabinet IR if one is available
+        if self.ir_list:
+            self.cabinet.load_ir(self.ir_list[0])
 
         # audio stream handle
         self.audio_engine = AudioEngine(self)
