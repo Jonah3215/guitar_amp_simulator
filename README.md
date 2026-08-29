@@ -26,7 +26,7 @@ The application also provides a graphical interface for controlling the amplifie
 
 ## DSP Signal Chain
 
-The audio is processed through three main stages: Input Stage, Amp Stage, and Output Stage
+The audio is processed through three main stages: input stage, amp stage, and output stage
 
 ```text
 Input Stage
@@ -119,7 +119,7 @@ The application is organized into separate GUI, application-state, audio-engine,
 * Python 3.11+ recommended
 * An audio input device
 * An audio output device
-* A guitar and audio interface for guitar input
+* A guitar and audio interface for guitar input (though microphone input can be processed aswell)
 
 The application processes audio at **48 kHz**. (Sampling rate can be altered in settings tab, but 48 kHz is recommended.)
 
