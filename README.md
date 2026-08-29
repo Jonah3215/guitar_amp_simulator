@@ -26,7 +26,7 @@ The application also provides a graphical interface for controlling the amplifie
 
 ## DSP Signal Chain
 
-The audio is processed through three main stages:
+The audio is processed through three main stages: Input Stage, Amp Stage, and Output Stage
 
 ```text
 Input Stage
