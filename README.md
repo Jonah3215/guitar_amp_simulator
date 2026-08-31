@@ -101,8 +101,6 @@ amp_simulator/
 └── gui/
     ├── __init__.py
     ├── gui.py
-    ├── components/
-    │   └── ...
     └── windows/
         ├── main_amp.py
         ├── input_effects.py
